@@ -1,0 +1,121 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ------------------------------------------------------
+// ENUMS
+// ------------------------------------------------------
+
+enum Role {
+  MANAGER
+  TECHNICAL
+  EMPLOYEE
+}
+
+enum Status {
+  OPEN
+  ASSIGNED
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum Category {
+  IT_SUPPORT
+  FACILITIES
+  HR
+  OTHER
+}
+
+// ------------------------------------------------------
+// MODELS
+// ------------------------------------------------------
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String   // Hashed with bcryptjs
+  name      String
+  role      Role     @default(EMPLOYEE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships (Django's related_name)
+  createdTickets  Ticket[]      @relation("CreatedBy")
+  assignedTickets Ticket[]      @relation("AssignedTo")
+  comments        Comment[]
+  activityLogs    ActivityLog[]
+
+  @@map("users")
+}
+
+model Ticket {
+  id           String   @id @default(uuid())
+  // ticketNumber handles auto-incrementing integers for formatting TKT-001, TKT-002, etc.
+  ticketNumber Int      @default(autoincrement()) @unique
+  title        String
+  description  String   @db.Text
+  category     Category
+  priority     Priority @default(MEDIUM)
+  status       Status   @default(OPEN)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Foreign Keys & Relations
+  createdById String
+  createdBy   User   @relation("CreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
+
+  assignedToId String?
+  assignedTo   User?   @relation("AssignedTo", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  comments     Comment[]
+  activityLogs ActivityLog[]
+
+  @@map("tickets")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+
+  // Relations
+  ticketId String
+  ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  action    String   // e.g. "STATUS_CHANGE", "ASSIGNED", "TICKET_CREATED"
+  message   String   // Human readable log: "Status changed from OPEN to ASSIGNED by John Manager"
+  createdAt DateTime @default(now())
+
+  // Relations
+  ticketId String
+  ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  performedById String
+  performedBy   User   @relation(fields: [performedById], references: [id], onDelete: Cascade)
+
+  @@map("activity_logs")
+}
