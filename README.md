@@ -1,4 +1,4 @@
-# 🎫 Helpdesk OS — Role-Based IT Ticketing System
+# 🎫 Helpdesk  — Role-Based IT Ticketing System
 
 A full-stack, enterprise-grade IT Helpdesk application built with Next.js 16 (App Router & Turbopack), Server Actions, Prisma 7 ORM, PostgreSQL, and Tailwind CSS / shadcn/ui.
 
@@ -19,7 +19,6 @@ A full-stack, enterprise-grade IT Helpdesk application built with Next.js 16 (Ap
 
 ## 🖼️ Application Screenshots
 
-> *Note: Place your screenshot images inside the `public/screenshots/` folder.*
 
 | Dashboard Overview | Ticket Workflow & Details |
 | :---: | :---: |
