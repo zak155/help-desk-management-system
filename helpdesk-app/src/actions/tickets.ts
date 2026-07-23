@@ -86,7 +86,8 @@ export async function updateTicketStatusAction(ticketId: string, newStatus: Stat
     return { error: "You are not authorized to make this status transition." };
   }
 
-  await prisma.$transaction(async (tx) => {
+  await prisma.$transaction(
+  async (tx) => {
     await tx.ticket.update({
       where: { id: ticketId },
       data: { status: newStatus },
@@ -96,11 +97,16 @@ export async function updateTicketStatusAction(ticketId: string, newStatus: Stat
       data: {
         ticketId,
         performedById: session.userId,
-        action: "STATUS_CHANGE",
-        message: `Status updated from ${ticket.status} to ${newStatus}`,
+        action: "STATUS_CHANGED",
+        message: `Status updated to ${newStatus}`,
       },
     });
-  });
+  },
+  {
+    maxWait: 10000, // Wait up to 10 seconds to get a DB connection
+    timeout: 20000, // Increase transaction timeout limit from 5s to 20s
+  }
+);
 
   revalidatePath(`/tickets/${ticketId}`);
   revalidatePath("/tickets");
