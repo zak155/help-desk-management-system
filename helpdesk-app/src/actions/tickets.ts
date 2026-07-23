@@ -23,14 +23,14 @@ export async function createTicketAction(data: CreateTicketInput) {
   const { title, description, category, priority } = validated.data;
 
   // Create Ticket & initial Activity Log in a Prisma transaction
-  const ticket = await prisma.$transaction(async (tx) => {
+  const ticket = await prisma.$transaction(
+  async (tx) => {
     const newTicket = await tx.ticket.create({
       data: {
         title,
         description,
         category,
         priority,
-        status: Status.OPEN,
         createdById: session.userId,
       },
     });
@@ -40,12 +40,17 @@ export async function createTicketAction(data: CreateTicketInput) {
         ticketId: newTicket.id,
         performedById: session.userId,
         action: "TICKET_CREATED",
-        message: `Ticket created with status OPEN`,
+        message: `Ticket created with priority ${priority}`,
       },
     });
 
     return newTicket;
-  });
+  },
+  {
+    maxWait: 10000, // Wait up to 10s to acquire a connection
+    timeout: 20000, // Allow up to 20s for the transaction to complete
+  }
+);
 
   revalidatePath("/tickets");
   redirect(`/tickets/${ticket.id}`);

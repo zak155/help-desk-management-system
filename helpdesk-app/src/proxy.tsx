@@ -5,7 +5,7 @@ import { verifySession } from "@/lib/session";
 // Public routes accessible without logging in
 const PUBLIC_ROUTES = ["/login", "/register"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const sessionToken = request.cookies.get("session")?.value;
   const session = sessionToken ? await verifySession(sessionToken) : null;
