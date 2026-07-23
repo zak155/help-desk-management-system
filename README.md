@@ -26,7 +26,7 @@ A full-stack, enterprise-grade IT Helpdesk application built with Next.js 16 (Ap
 
 | Create New Ticket | Ticket Queue |
 | :---: | :---: |
-| ![Create Ticket](./helpdesk-app/public/screenshots/login.PNG) | ![Tickets Queue](./helpdesk-app/public/screenshots/manager-dashboard.png) |
+| ![Create Ticket](./helpdesk-app/public/screenshots/login.PNG) | ![Tickets Queue](./helpdesk-app/public/screenshots/manager-dashboard.PNG) |
 
 ---
 
