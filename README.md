@@ -22,7 +22,7 @@ A full-stack, enterprise-grade IT Helpdesk application built with Next.js 16 (Ap
 
 | Dashboard Overview | Ticket Workflow & Details |
 | :---: | :---: |
-| ![Dashboard Overview](./public/screenshots/dashboard.PNG) | ![Ticket Details](./public/screenshots/employee-dashboard.PNG) |
+| ![Dashboard Overview](public/screenshots/dashboard.PNG) | ![Ticket Details](./public/screenshots/employee-dashboard.PNG) |
 
 | Create New Ticket | Ticket Queue |
 | :---: | :---: |
