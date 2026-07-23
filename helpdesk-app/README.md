@@ -19,7 +19,7 @@ A full-stack, enterprise-grade IT Helpdesk application built with Next.js 16 (Ap
 
 ## 🖼️ Application Screenshots
 
-> *Note: Place your screenshot images inside the `public/screenshots/` folder.*
+
 
 | Dashboard Overview | Ticket Workflow & Details |
 | :---: | :---: |
@@ -75,9 +75,11 @@ helpdesk-app/
 ├── package.json                 # Project dependencies & scripts
 └── prisma.config.ts             # Prisma 7 CLI configuration# help-desk-management-system
 
+---
 
-Framework & Frontend
-Next.js 16 — App Router, Server Actions, Turbopack
+## 🖼️ front-end stack
+
+ > Next.js 16 — App Router, Server Actions, Turbopack
 
 React 19 — UI Library
 
